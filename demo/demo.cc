@@ -15,5 +15,9 @@ int main(int argc, char** argv){
 	auto peer = peer_manager.CreateP2PPeer();
 	peer->ConnectTo(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 8710));
 	getchar();
+	peer->SendMessage("hello~~~~~~~~1");
+	getchar();
+	peer->SendMessage("hello~~~~~~~~2");
+	getchar();
 	return 0;
 }

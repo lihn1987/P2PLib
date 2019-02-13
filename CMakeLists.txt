@@ -3,7 +3,7 @@ project(libp2p)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 SET(Boost_USE_STATIC_LIBS ON)
 SET(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g")
 find_package(Boost 1.67.0 COMPONENTS system filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
