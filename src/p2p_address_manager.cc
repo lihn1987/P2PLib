@@ -7,7 +7,7 @@ bool P2PAdressManager::AddWhiteAddr(const boost::asio::ip::tcp::endpoint& addr){
     }else{
         white_addr_list_.insert(addr);
     }
-    return true;
+    return  true;
 }
 
 bool P2PAdressManager::RemoveWhiteAddr(const boost::asio::ip::tcp::endpoint& addr){

@@ -21,10 +21,12 @@ void P2PPeer::ConnectTo(const boost::asio::ip::tcp::endpoint& ep){
     OnConnect = [=](const boost::system::error_code& ec, const boost::asio::ip::tcp::endpoint& ep){
         if(ec){
             LOG(WARNING)<<"连接到("<<ep.address().to_string()<<":"<<ep.port()<<")失败:"<<ec.message();
+            on_error_sig(ec);
         }else{
             LOG(WARNING)<<"连接到("<<ep.address().to_string()<<":"<<ep.port()<<")成功!";
+            on_connect_sig();
         }
-        if(on_connect_callback_)on_connect_callback_(ec);
+
     };
     LOG(WARNING)<<"正在连接到"<<ep.address().to_string()<<":"<<ep.port();
     socket_->async_connect(ep, std::bind(OnConnect, std::placeholders::_1, ep));
@@ -69,6 +71,18 @@ bool P2PPeer::SendMessage(const char* msg, uint32_t len){
     send_buffer_.insert(send_buffer_.end(), msg, msg+len);
     socket_->async_send(boost::asio::buffer(send_buffer_), OnSendMessage);
     return true;
+}
+
+boost::signals2::connection P2PPeer::AddOnConnectCallback(std::function<void ()> cb){
+    return on_connect_sig.connect(cb);
+}
+
+boost::signals2::connection P2PPeer::AddOnErrorCallback(std::function<void (const boost::system::error_code &)> cb){
+    return on_error_sig.connect(cb);
+}
+
+boost::signals2::connection P2PPeer::AddOnReceiveCallback(std::function<void (const std::string &)> cb){
+    return on_receive_sig.connect(cb);
 }
 
 bool P2PPeer::IsConnected(){
